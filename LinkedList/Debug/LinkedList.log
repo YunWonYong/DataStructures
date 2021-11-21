@@ -1,0 +1,7 @@
+﻿  Main.c
+C:\github\algorithms-with-C\LinkedList\singleLinkedList.h(23,60): warning C4031: 둘째 정식 매개 변수 목록이 첫째 목록보다 깁니다.
+C:\github\algorithms-with-C\LinkedList\singleLinkedList.h(23,60): warning C4028: 정식 매개 변수 1이(가) 선언과 다릅니다.
+C:\github\algorithms-with-C\LinkedList\singleLinkedList.h(23,60): warning C4273: 'remove': dll 연결이 일치하지 않습니다.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(364,26): message : 'remove'의 이전 정의를 참조하십시오.
+MSVCRTD.lib(exe_main.obj) : error LNK2019: _main"int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+C:\github\algorithms-with-C\LinkedList\Debug\LinkedList.exe : fatal error LNK1120: 1개의 확인할 수 없는 외부 참조입니다.
