@@ -4,16 +4,15 @@ public class List<T> {
 	private T[] array;
 	private int size;
 	private int capacity;
-	private final int DEFAULT_CAPCITY = 10;
+	private final static int DEFAULT_CAPCITY = 10;
 
 	public List() {
-		capacity = DEFAULT_CAPCITY;
-		this.array = getArray();
+		this(DEFAULT_CAPCITY);
 	}
 	
 	public List(int capacity) {
 		this.capacity = capacity;
-		this.array = getArray();
+		this.array = getArray(capacity);
 	}
 
 	public boolean add(T element) {
@@ -49,13 +48,12 @@ public class List<T> {
  
 	public void extend() {
 		T[] temp = array;
-		array = getArray();
+		array = getArray(this.capacity * this.capacity);
 		System.arraycopy(array, 0, temp, 0, temp.length);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private T[] getArray() { 
-		capacity *= capacity;
+	private T[] getArray(int capacity) { 
 		T[] array = (T[]) new Object[capacity];
 		return array;
 	}
