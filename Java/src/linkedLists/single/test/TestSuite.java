@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	AddIndexTest.class,  
 	IndexOfTest.class,
 	SetTest.class,
-	RemoveTest.class
+	RemoveTest.class,
+	GetTest.class
 })
 public class TestSuite {
 }

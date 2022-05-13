@@ -64,7 +64,7 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
 
 	@Override
 	public void add(T element, int index) {
-		if (size < index) {
+		if (index < 0 || size < index) {
 			try {
 				throw new Exception(String.format("list size: %d add index: %d", size, index));
 			} catch (Exception e) {
