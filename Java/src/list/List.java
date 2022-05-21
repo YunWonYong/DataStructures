@@ -48,8 +48,9 @@ public class List<T> {
  
 	public void extend() {
 		T[] temp = array;
-		array = getArray(this.capacity * this.capacity);
-		System.arraycopy(array, 0, temp, 0, temp.length);
+		this.capacity <<= 1;
+		array = getArray(this.capacity);
+		System.arraycopy(temp, 0, array, 0, temp.length);
 	}
 	
 	@SuppressWarnings("unchecked")

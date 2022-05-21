@@ -3,14 +3,13 @@ package list;
 public class Main {
 
 	public Main() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
 		List<Integer> list = new List<>();
 		
 		int index = 0;
-		int range = 10;
+		int range = 2000;
 		boolean flag = true;
 		while(true) {
 			if (flag && index < range) {
