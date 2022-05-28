@@ -14,7 +14,7 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
 			this.value = value;
 			this.next = next;
 		}
-		
+
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -68,6 +68,7 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
 			try {
 				throw new Exception(String.format("list size: %d add index: %d", size, index));
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		} else  if (size == index) {
 			add(element);
@@ -156,7 +157,9 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
 	
 	private Node<T> getNode(int index) {
 		if (indexCheck(index)) {
-			return size == 0 ? this.head: size == index ? this.tail : findNode(index);
+			return size == 0 ? this.head
+					: size == index ? this.tail 
+							: findNode(index);
 		}
 		return null;
 	}
