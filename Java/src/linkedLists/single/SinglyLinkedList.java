@@ -110,7 +110,7 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
 	public boolean remove(int index) {
 		if (index < 0 || index >= this.size) {
 			try {
-				throw new IndexOutOfBoundsException(index);
+				throw new IndexOutOfBoundsException();
 			} catch (Exception e) {
 				throw e;
 			}

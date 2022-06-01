@@ -32,20 +32,23 @@ class Node<E> {
 	}
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		return sb.append("value: ")
-				 .append(value)
-				 .append(", prevNode: ")
-				 .append(prev == null ? null: prev.value)
-				 .append(", nextValue: ")
-				 .append(next == null ? null: next.value)
-				 .toString();
+		return new StringBuffer()
+		           .append("value: ")
+				   .append(value)
+				   .append(", prevNode: ")
+				   .append(prev == null ? null: prev.value)
+				   .append(", nextValue: ")
+				   .append(next == null ? null: next.value)
+				   .toString();
 	}
 }
 
 public final class NodeFactory {
 	private static NodeFactory INSTANCE;
 	
+	private NodeFactory() {
+		
+	}
 
 	public static NodeFactory getInstance() {
 		if (INSTANCE == null) {

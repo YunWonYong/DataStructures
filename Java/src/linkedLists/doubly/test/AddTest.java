@@ -2,6 +2,7 @@ package linkedLists.doubly.test;
 
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,14 @@ public class AddTest {
 		
 		Object[] except = new Object[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 		assertArrayEquals(except, doublyLinkedList.toArray());
+	}
+
+	@Test
+	public void arrayAddAllTest() {
+		Integer[] array = new Integer[] {100, 120, 130, 212, 12314, 1231515, 123125};
+		doublyLinkedList.addAll(array);
+		assertTrue(doublyLinkedList.size() == array.length);
+		assertArrayEquals(array, doublyLinkedList.toArray());
 	}
 
 }
