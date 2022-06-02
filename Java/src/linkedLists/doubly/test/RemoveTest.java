@@ -20,7 +20,6 @@ public class RemoveTest {
     @Before 
     public void setUp() {
         doublyLinkedList = new DoublyLinkedList<>();
-        doublyLinkedList.addAll(EXCEPT);
     }
 
     @Test(expected=IndexOutOfBoundsException.class)
@@ -30,6 +29,7 @@ public class RemoveTest {
 
     @Test
     public void removeTest() {
+        doublyLinkedList.addAll(EXCEPT);
         int size = doublyLinkedList.size();
         assertTrue(EXCEPT.length == size);
         while(--size > -1) {
@@ -42,6 +42,7 @@ public class RemoveTest {
 
     @Test
     public void removeTest2() {
+        doublyLinkedList.addAll(EXCEPT);
         int size = doublyLinkedList.size();
         assertTrue(EXCEPT.length == size);
         while(--size > -1) {
@@ -54,6 +55,7 @@ public class RemoveTest {
 
     @Test(expected=IndexOutOfBoundsException.class)
     public void removeTest3() {
+        doublyLinkedList.addAll(EXCEPT);
         int size = doublyLinkedList.size();
         assertTrue(EXCEPT.length == size);
         int index = 0;
@@ -65,6 +67,7 @@ public class RemoveTest {
 
     @Test
     public void removeTest4() {
+        doublyLinkedList.addAll(EXCEPT);
         int size = doublyLinkedList.size();
         assertTrue(EXCEPT.length == size);
         doublyLinkedList.remove(1);

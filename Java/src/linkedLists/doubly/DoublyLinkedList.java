@@ -1,5 +1,6 @@
 package linkedLists.doubly;
 
+import java.util.Collection;
 
 public class DoublyLinkedList<E> {
 	private Node<E> head;
@@ -8,22 +9,7 @@ public class DoublyLinkedList<E> {
 	private final NodeFactory factory;
 	
 	public DoublyLinkedList() {
-		factory = NodeFactory.getInstance();
-	}
-
-	public void addAll(E[] values) {
-		try {
-			if (values == null) {
-				throw new NullPointerException("input values is null");
-			}
-			int index = 0;
-			int range = values.length;
-			do {
-				add(values[index]);
-			} while(++index < range);
-		} catch (Exception e) {
-			throw e;
-		}
+		this.factory = NodeFactory.getInstance();
 	}
 	
 	public void add(E value) {
@@ -41,6 +27,33 @@ public class DoublyLinkedList<E> {
 			this.tail.setNext(node);
 		}
 		this.tail = node;
+	}
+	
+	public void addAll(E[] values) {
+		try {
+			if (values == null) {
+				throw new NullPointerException("input values is null");
+			}
+			int index = 0;
+			int range = values.length;
+			do {
+				add(values[index]);
+			} while(++index < range);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public void addAll(Collection<? extends E> container) {
+		try {
+
+			if (container == null) {
+				throw new NullPointerException("input values is null");
+			}
+			container.forEach(this::add);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	public E remove(int index) {
@@ -65,12 +78,36 @@ public class DoublyLinkedList<E> {
 			}
 			return value;
 		}
-		Node<E> preNode = node.getPrev();
+		Node<E> prevNode = node.getPrev();
 		Node<E> nextNode = node.getNext();
-		//node.getPrev().setNext(node.getNext());
-		preNode.setNext(nextNode);
-		nextNode.setPrev(preNode);
+		prevNode.setNext(nextNode);
+		nextNode.setPrev(prevNode);
 		return value;
+	}
+
+	public int removeAll() {
+		this.head = null;
+		this.tail = null;
+		return size = 0;
+	}
+
+	public E get(int index) {
+		return getValue(nodeIndexSearch(index));
+	}
+
+	public E set(int index, E value) {
+		Node<E> node = nodeIndexSearch(index);
+		E oldValue = node.getValue();
+		node.setValue(value);
+		return oldValue;
+	}
+
+	public int indexOf(E value) {
+		return nodeElementSearch(value, true);
+	}
+
+	public int lastIndexOf(E value) {
+		return nodeElementSearch(value, false);
 	}
 
 	public int size() {
@@ -90,6 +127,27 @@ public class DoublyLinkedList<E> {
 			node = node.getNext();
 		}
 		return array;
+	}
+
+	public void reverse() {
+		if (isEmpty() || isTailNodeNull()) {
+			return;
+		}
+		this.head = this.tail;
+		Node<E> node = this.head;
+		Node<E> tempNode = null;
+		while(true) {
+			tempNode = node.getPrev();
+			node.setPrev(node.getNext());
+			node.setNext(tempNode);
+			if (tempNode == null) {
+				this.tail = node;
+				return;
+			}
+			tempNode.setNext(tempNode.getPrev());
+			tempNode.setPrev(node);
+			node = tempNode.getNext();
+		}
 	}
 
 	private boolean isHeadNodeNull() {
@@ -137,9 +195,37 @@ public class DoublyLinkedList<E> {
 		return null;
 	}
 	
-	private Node<E> nodeElementSearch(E value) {
-		Node<E> node = null;
-		return node;
+	private int nodeElementSearch(E value, boolean direction) {
+		if (isEmpty()) {
+			return -1;
+		} else if (isTailNodeNull()) {
+			return this.head.getValue().equals(value) ? 0 : -1;
+		}
+		return direction ? headNodeStartSearch(value): tailNodeStartSearch(value);
+	}
+
+	private int headNodeStartSearch(E value) {
+		int pos = 0;
+		Node<E> node = this.head;
+		do {
+			if (node.getValue().equals(value)) {
+				return pos;
+			}
+			pos++;
+		} while((node = node.getNext()) != null);
+		return -1;
+	}
+
+	private int tailNodeStartSearch(E value) {
+		int pos = this.size - 1;
+		Node<E> node = this.tail;
+		do {
+			if (node.getValue().equals(value)) {
+				return pos;
+			}
+			pos--;
+		} while((node = node.getPrev()) != null);
+		return -1;
 	}
 
 	private boolean checkAvailableIndexe(int index) {

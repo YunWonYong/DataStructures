@@ -30,14 +30,18 @@ class Node<E> {
 	public E getValue() {
 		return this.value;
 	}
+
+	public void setValue(E value) {
+		this.value = value;
+	}
 	
 	public String toString() {
 		return new StringBuffer()
+				   .append(", prevNodeValue: ")
+				   .append(prev == null ? null: prev.value)
 		           .append("value: ")
 				   .append(value)
-				   .append(", prevNode: ")
-				   .append(prev == null ? null: prev.value)
-				   .append(", nextValue: ")
+				   .append(", nextNodeValue: ")
 				   .append(next == null ? null: next.value)
 				   .toString();
 	}
