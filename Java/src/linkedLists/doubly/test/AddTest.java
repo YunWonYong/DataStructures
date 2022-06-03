@@ -49,4 +49,54 @@ public class AddTest {
 		assertTrue(doublyLinkedList.size() == list.size());
 		assertArrayEquals(list.toArray(), doublyLinkedList.toArray());
 	}
+
+	@Test
+	public void addIndexTest() {
+		String[] except = new String[] {"안", "녕", "하", "세", "요"};
+		int index = 0;
+		int range = except.length;
+		DoublyLinkedList<String> doublyLinkedList = new DoublyLinkedList<>();
+		do {
+			if (index == 2) {
+				continue;
+			}
+			doublyLinkedList.add(except[index]);
+		} while(++index < range);
+		assertArrayEquals(new String[] {"안", "녕", "세", "요"}, doublyLinkedList.toArray());
+		doublyLinkedList.add(2, "하");
+		assertArrayEquals(except, doublyLinkedList.toArray());
+	}
+
+	@Test
+	public void firstAddIndexTest() {
+		String[] except = new String[] {"안", "녕", "하", "세", "요"};
+		int index = 0;
+		int range = except.length - 1;
+		DoublyLinkedList<String> doublyLinkedList = new DoublyLinkedList<>();
+		while(index++ < range) {
+			doublyLinkedList.add(except[index]);
+		}
+		assertArrayEquals(new String[] {"녕", "하", "세", "요"}, doublyLinkedList.toArray());
+		doublyLinkedList.add(0, "안");
+		assertArrayEquals(except, doublyLinkedList.toArray());
+	}
+
+	@Test
+	public void lastAddIndexTest() {
+		String[] except = new String[] {"안", "녕", "하", "세", "요"};
+		int index = 0;
+		int range = except.length - 1;
+		DoublyLinkedList<String> doublyLinkedList = new DoublyLinkedList<>();
+		while(index < range) {
+			doublyLinkedList.add(except[index++]);
+		}
+		assertArrayEquals(new String[] {"안", "녕", "하", "세"}, doublyLinkedList.toArray());
+		doublyLinkedList.add(doublyLinkedList.size(), "요");
+		assertArrayEquals(except, doublyLinkedList.toArray());
+	}
+
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void addIndexExceptionTest() {
+		new DoublyLinkedList<>().add(doublyLinkedList.size() + 1, "안");
+	}
 }

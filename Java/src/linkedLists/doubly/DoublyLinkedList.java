@@ -28,6 +28,30 @@ public class DoublyLinkedList<E> {
 		}
 		this.tail = node;
 	}
+
+	public void add(int index, E value) {
+		try {
+			if (index == size) {
+				add(value);
+				return;
+			} 
+			
+			Node<E> oldNode = nodeIndexSearch(index);
+			size++;
+			Node<E> node = factory.nodeInstance(oldNode.getPrev(), value, oldNode);
+			Node<E> prevNode = oldNode.getPrev();
+			
+			if (prevNode != null) {
+				prevNode.setNext(node);
+			} else if (index == 0) {
+				this.head = node;
+			} 
+			
+			oldNode.setPrev(node);
+		} catch(Exception e) {
+			throw e;
+		}
+	}
 	
 	public void addAll(E[] values) {
 		try {

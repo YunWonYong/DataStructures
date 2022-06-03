@@ -5,7 +5,7 @@ class Node<E> {
 	private Node<E> next;
 	private E value;
 	
-	Node(Node<E> prev, Node<E> next, E value) {
+	Node(Node<E> prev, E value, Node<E> next) {
 		this.prev = prev;
 		this.value = value;
 		this.next = next;
@@ -62,23 +62,23 @@ public final class NodeFactory {
 	}
 	
 	public <E> Node<E> nodeInstance(E value) {
-		return createNode(null, null, value);
+		return createNode(null, value, null);
 	}
 	
 	public <E> Node<E> nodeInstance(E value, Node<E> next) {
-		return createNode(null, next, value);
+		return createNode(null, value, next);
 	}
 	
 	public <E> Node<E> nodeInstance(Node<E> prev, E value) {
-		return createNode(prev, null, value);
+		return createNode(prev, value, null);
 	}
 	
-	public <E> Node<E> nodeInstance(Node<E> prev, Node<E> next, E value) {
-		return createNode(prev, next, value);
+	public <E> Node<E> nodeInstance(Node<E> prev, E value, Node<E> next) {
+		return createNode(prev, value, next);
 	}
 
-	private <E> Node<E> createNode(Node<E> prev, Node<E> next, E value) {
-		return new Node<E>(prev, next, value);
+	private <E> Node<E> createNode(Node<E> prev, E value, Node<E> next) {
+		return new Node<E>(prev, value, next);
 	}
 
 	
