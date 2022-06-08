@@ -70,7 +70,6 @@ public class DoublyLinkedList<E> {
 
 	public void addAll(Collection<? extends E> container) {
 		try {
-
 			if (container == null) {
 				throw new NullPointerException("input values is null");
 			}
@@ -112,7 +111,7 @@ public class DoublyLinkedList<E> {
 	public int removeAll() {
 		this.head = null;
 		this.tail = null;
-		return size = 0;
+		return this.size = 0;
 	}
 
 	public E get(int index) {
@@ -229,27 +228,35 @@ public class DoublyLinkedList<E> {
 	}
 
 	private int headNodeStartSearch(E value) {
-		int pos = 0;
+		int index = 0;
 		Node<E> node = this.head;
 		do {
-			if (node.getValue().equals(value)) {
-				return pos;
+			if (nodeValueEquals(node, value)) {
+				return index;
 			}
-			pos++;
+			index++;
 		} while((node = node.getNext()) != null);
 		return -1;
 	}
 
 	private int tailNodeStartSearch(E value) {
-		int pos = this.size - 1;
+		int index = this.size - 1;
 		Node<E> node = this.tail;
 		do {
-			if (node.getValue().equals(value)) {
-				return pos;
+			if (nodeValueEquals(node, value)) {
+				return index;
 			}
-			pos--;
+			index--;
 		} while((node = node.getPrev()) != null);
 		return -1;
+	}
+
+	private boolean nodeValueEquals(Node<E> node, E left) {
+		E right = getValue(node);
+		if (right == null) {
+			return right == left;
+		} 
+		return right.equals(left); 
 	}
 
 	private boolean checkAvailableIndexe(int index) {
