@@ -12,10 +12,15 @@ public abstract class AbstractTreeTraversal<E> implements TreeTraversal<E> {
 
 	public String flush() {
 		String str = buffer.toString();
-		str = str.substring(0, str.length() - 2);
-		System.out.println(str);
+		if (str.length() > 2) {
+			str = str.substring(0, str.length() - 2);			
+		}
 		buffer.setLength(0);
 		return str;
+	}
+	
+	protected void bufferAppend(E data, String separator) {
+		buffer.append(data).append(separator);
 	}
 	
 	@Override

@@ -35,4 +35,14 @@ public class Node<E> {
 		this.rightChild = rightChild;
 	}
 	
+	public String toString() {
+		return new StringBuffer()
+				   .append("leftChild: ")
+				   .append(leftChild == null ? null: leftChild.data)
+		           .append(", data: ")
+				   .append(data)
+				   .append(", rightChild: ")
+				   .append(rightChild == null ? null: rightChild.data)
+				   .toString();
+	}
 }
