@@ -13,8 +13,8 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 		final Stack2<Node<E>> callStack = STACK_FACTORY.getInstance(node);
 		Node<E> currentNode = null;
 		while((currentNode = callStack.pop()) != null) {
-			printBufferDataPush(currentNode)
-				.notNullNodePush(callStack, currentNode.getRightChild(), currentNode.getLeftChild());
+			printBufferDataPush(currentNode);
+			notNullNodePush(callStack, currentNode.getRightChild(), currentNode.getLeftChild());
 		}
 	}
 
@@ -22,22 +22,24 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 	public void inOrder(Node<E> node) {
 		final Stack2<Node<E>> callStack = STACK_FACTORY.getInstance(node);
 		Node<E> currentNode = null;
-		Node<E> leftNode = null;
+		Node<E> pushChildNode = null;
 		while(true) {
-			currentNode = callStack.pop();
-			leftNode = currentNode.getLeftChild(); 
-			if (isNull(leftNode)) {
+			currentNode = callStack.top();
+			pushChildNode = currentNode.getLeftChild();
+			if (isNull(pushChildNode)) {
+				
 				printBufferDataPush(currentNode);
+				callStack.pop();
 				currentNode = callStack.pop();
 				if (isNull(currentNode)) {
 					return;
 				}
 				
-				printBufferDataPush(currentNode)
-					.notNullNodePush(callStack, currentNode.getRightChild());
-				continue;
+				printBufferDataPush(currentNode);
+				pushChildNode = currentNode.getRightChild();
 			}
-			notNullNodePush(callStack, currentNode, leftNode);
+			
+			notNullNodePush(callStack, pushChildNode);
 		}
 	}
 
@@ -50,27 +52,9 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 		Node<E> parentNode = null;
 		while(true) {
 			currentNode = callStack.pop();
-			leftChildNode = currentNode.getLeftChild();
-			rightChildNode = currentNode.getRightChild();
-			if (leftChildNode == null && rightChildNode == null) {
-				printBufferDataPush(currentNode);
-				parentNode = callStack.top();
-				if (parentNode == null) {
-					return;
-				}		
-			} else if (currentNode.equals(parentNode)) {
-				if (rightChildNode != null) {
-					callStack.push(leftChildNode);
-					continue;
-				}
-				
+			if (isChildrenNull(currentNode)) {
 			}
-			
-			if (leftChildNode != null) {
-				callStack.push(leftChildNode);
-				continue;
-			}
-			
+			return;
 		}
 	}
 	
@@ -104,9 +88,8 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 		return node == null;
 	}
 	
-	private TreeIterativeTraversal<E> printBufferDataPush(Node<E> node) {
+	private void printBufferDataPush(Node<E> node) {
 		printBufferDataPush(node, ", ");
-		return this;
 	}
 	
 	private void printBufferDataPush(Node<E> node, String separator) {
