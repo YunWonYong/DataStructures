@@ -3,6 +3,7 @@ package tree.binary.traversal.test;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import tree.binary.Node;
@@ -50,12 +51,14 @@ public class IterativeTraversalTest {
 		assertEquals("8, 4, 2, 1, 3, 6, 5, 7, 12, 10, 9, 11, 14, 13, 15", ITERATIVE_TRAVERSAL.flush());
 	}
 	
+	@Ignore
 	@Test
 	public void ITERATIVEInOrderTraversal() {
 		ITERATIVE_TRAVERSAL.inOrder(ROOT_NODE);
 		assertEquals("1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15", ITERATIVE_TRAVERSAL.flush());
 	}
 	
+	@Ignore
 	@Test
 	public void ITERATIVEPostOrderTraversal() {
 		ITERATIVE_TRAVERSAL.postOrder(ROOT_NODE);

@@ -28,6 +28,15 @@ public class List<T> {
 		return true;
 	}
 	
+	public void add(int index, T element) {
+		try {
+			array[index] = element;
+			size++;
+		} catch(IndexOutOfBoundsException e) {
+			throw e;
+		}
+	}
+	
 	public T get(int index) {
 		if(isEmpty()) {
 			return null;

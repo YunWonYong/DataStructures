@@ -14,23 +14,20 @@ public class Stack2<T> {
 		this.array = new List<>(capacity);
 	}
 
-	public boolean push(T element) {
+	public void push(T element) {
 		try {
-			array.add(element);
-			top++;
+			array.add(top++,element);
 		} catch (Exception e) {
-			return false;
+			throw e;
 
 		}
-		return true;
 	}
 	
 	public T pop() {
-		if(isEmpty()) {
-			return null;
-		}
 		T t = top();
-		top--;
+		if (t != null) {
+			top--;			
+		}
 		return t;
 	}
 	
