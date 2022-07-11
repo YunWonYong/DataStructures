@@ -1,5 +1,8 @@
 package tree.binary.traversal;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import stack.Stack2;
 import tree.binary.Node;
 
@@ -46,15 +49,50 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 	@Override
 	public void postOrder(Node<E> node) {
 		final Stack2<Node<E>> callStack = STACK_FACTORY.getInstance(node);
+		Map<Integer, Boolean> printTable = new HashMap<Integer, Boolean>();
 		Node<E> currentNode = null;
-		Node<E> leftChildNode = null;
-		Node<E> rightChildNode = null;
 		Node<E> parentNode = null;
+		Boolean printFlag = false;
+		int key = 0_0;
 		while(true) {
-			currentNode = callStack.pop();
-			if (isChildrenNull(currentNode)) {
+			currentNode = callStack.top();
+			key = parentNode != null ? parentNode.hashCode(): currentNode.hashCode();
+			printFlag = printTable.get(key);
+			if (printFlag != null && printFlag == true) {
+				printBufferDataPush(currentNode);
+				callStack.pop();
+				parentNode = callStack.top();
+				key = parentNode != null ? parentNode.hashCode(): currentNode.hashCode();
+				if (parentNode != null && parentNode.getLeftChild().equals(currentNode)) {
+					printTable.put(key, false);
+					notNullNodePush(callStack, parentNode.getRightChild());
+				} else if (parentNode != null && parentNode.getRightChild().equals(currentNode)) {
+					printTable.put(key, true);
+				} else if (parentNode == null) {
+					return;
+				}
+				continue;
+			} else if (printFlag == null || printFlag == false) {
+				
+				if (isChildrenNull(currentNode)) {
+					callStack.pop();
+					if (parentNode != null && parentNode.getLeftChild().equals(currentNode)) {
+						printTable.put(key, false);
+						notNullNodePush(callStack, parentNode.getRightChild());
+					} else if (parentNode != null && parentNode.getRightChild().equals(currentNode)) {
+						printTable.put(key, true);
+						parentNode = null;
+					} 
+					printBufferDataPush(currentNode);
+					continue;
+				}
+//				 if (printFlag != null && printFlag == false) {
+//					notNullNodePush(callStack, parentNode.getRightChild());
+//					continue;
+//				}
 			}
-			return;
+			parentNode = currentNode;	
+			notNullNodePush(callStack, currentNode.getLeftChild());
 		}
 	}
 	
