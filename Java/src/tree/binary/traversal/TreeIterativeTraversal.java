@@ -26,23 +26,33 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 		final Stack2<Node<E>> callStack = STACK_FACTORY.getInstance(node);
 		Node<E> currentNode = null;
 		Node<E> pushChildNode = null;
-		while(true) {
-			currentNode = callStack.top();
+		Map<Integer, Boolean> printCheck = new HashMap<>(); 
+		int key = 0_0;
+		Boolean printFlag = null;
+		while((currentNode = callStack.top()) != null) {
+			key = currentNode.hashCode();
 			pushChildNode = currentNode.getLeftChild();
-			if (isNull(pushChildNode)) {
-				
-				printBufferDataPush(currentNode);
+			printFlag = printCheck.get(isNull(pushChildNode)? null: pushChildNode.hashCode());
+			if (isLeftChildNull(currentNode) || (printFlag != null && printFlag == true)) {
 				callStack.pop();
-				currentNode = callStack.pop();
-				if (isNull(currentNode)) {
-					return;
-				}
-				
+				printCheck.put(key, true);
 				printBufferDataPush(currentNode);
-				pushChildNode = currentNode.getRightChild();
-			}
+				notNullNodePush(callStack, currentNode.getRightChild());
+				continue;
+			}  
 			
-			notNullNodePush(callStack, pushChildNode);
+			
+			pushChildNode = currentNode.getLeftChild();
+			if (isNull(pushChildNode) == false && printCheck.get(pushChildNode.hashCode()) == null) {
+				notNullNodePush(callStack, pushChildNode);
+				continue;
+			} 
+			
+			pushChildNode = currentNode.getRightChild();
+			if (isNull(pushChildNode) == false && printCheck.get(pushChildNode.hashCode()) == null) {
+				notNullNodePush(callStack, pushChildNode);
+				continue;
+			} 
 		}
 	}
 
@@ -52,47 +62,56 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 		Map<Integer, Boolean> printTable = new HashMap<Integer, Boolean>();
 		Node<E> currentNode = null;
 		Node<E> parentNode = null;
+		Node<E> pushChildNode = null;
 		Boolean printFlag = false;
+		
 		int key = 0_0;
-		while(true) {
-			currentNode = callStack.top();
+		while((currentNode = callStack.top()) != null) {
 			key = parentNode != null ? parentNode.hashCode(): currentNode.hashCode();
 			printFlag = printTable.get(key);
-			if (printFlag != null && printFlag == true) {
-				printBufferDataPush(currentNode);
+			if(printFlag != null && printFlag == true) {
 				callStack.pop();
+				printBufferDataPush(currentNode);
 				parentNode = callStack.top();
-				key = parentNode != null ? parentNode.hashCode(): currentNode.hashCode();
-				if (parentNode != null && parentNode.getLeftChild().equals(currentNode)) {
-					printTable.put(key, false);
-					notNullNodePush(callStack, parentNode.getRightChild());
-				} else if (parentNode != null && parentNode.getRightChild().equals(currentNode)) {
-					printTable.put(key, true);
-				} else if (parentNode == null) {
+				if (parentNode == null) {
 					return;
 				}
-				continue;
-			} else if (printFlag == null || printFlag == false) {
 				
-				if (isChildrenNull(currentNode)) {
-					callStack.pop();
-					if (parentNode != null && parentNode.getLeftChild().equals(currentNode)) {
-						printTable.put(key, false);
-						notNullNodePush(callStack, parentNode.getRightChild());
-					} else if (parentNode != null && parentNode.getRightChild().equals(currentNode)) {
-						printTable.put(key, true);
-						parentNode = null;
-					} 
-					printBufferDataPush(currentNode);
+				key = parentNode.hashCode();
+				
+				if (currentNode.equals(parentNode.getLeftChild())) {
+					printTable.put(key, false);
+					notNullNodePush(callStack, parentNode.getRightChild());
+					continue;
+				} else if (currentNode.equals(parentNode.getRightChild())) {
+					printTable.put(key, true);
 					continue;
 				}
-//				 if (printFlag != null && printFlag == false) {
-//					notNullNodePush(callStack, parentNode.getRightChild());
-//					continue;
-//				}
+			} else if (isLeafNode(currentNode)) {
+				callStack.pop();
+				if (parentNode != null) {
+					if (currentNode.equals(parentNode.getLeftChild())) {
+						printTable.put(key, false);
+					} 
+					
+					if (isRightChildNull(parentNode) || currentNode.equals(parentNode.getRightChild())) {
+						printTable.put(key, true);
+					} 
+					
+					if (!currentNode.equals(parentNode.getRightChild()) && isRightChildNull(parentNode) == false) {
+						notNullNodePush(callStack, parentNode.getRightChild());
+					}
+				}
+				printBufferDataPush(currentNode);
+				continue;
 			}
-			parentNode = currentNode;	
-			notNullNodePush(callStack, currentNode.getLeftChild());
+			if (isLeftChildNull(currentNode) == false) {
+				pushChildNode = currentNode.getLeftChild();
+			} else if (isRightChildNull(currentNode) == false) {
+				pushChildNode = currentNode.getRightChild();
+			}
+			parentNode = currentNode;
+			notNullNodePush(callStack, pushChildNode);
 		}
 	}
 	
@@ -109,9 +128,9 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 			stack.push((Node<E>)obj);	
 		}
 	}
- 	
-	private boolean isChildrenNull(Node<E> parentNode) {
-		return isLeftChildNull(parentNode) && isRightChildNull(parentNode);
+
+	private boolean isLeafNode(Node<E> node) {
+		return isLeftChildNull(node) && isRightChildNull(node);
 	}
 	
 	private boolean isLeftChildNull(Node<E> parentNode) {

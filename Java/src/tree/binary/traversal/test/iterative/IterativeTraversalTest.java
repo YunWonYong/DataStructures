@@ -1,16 +1,16 @@
-package tree.binary.traversal.test;
+package tree.binary.traversal.test.iterative;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import tree.binary.Node;
-import tree.binary.traversal.TreeRecursiveTraversal;
+import tree.binary.traversal.TreeIterativeTraversal;
 
-public class RecursiveTraversalTest {
+public class IterativeTraversalTest {
 	private static final Node<Integer> ROOT_NODE = new Node<>(null, 8, null);
-	private static final TreeRecursiveTraversal<Integer> RECURSIVE_TRAVERSAL = new TreeRecursiveTraversal<Integer>();
+	private static final TreeIterativeTraversal<Integer> ITERATIVE_TRAVERSAL = new TreeIterativeTraversal<Integer>();
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -45,21 +45,21 @@ public class RecursiveTraversalTest {
 	}	
 	
 	@Test
-	public void recursivePreOrderTraversal() {
-		RECURSIVE_TRAVERSAL.preOrder(ROOT_NODE);
-		assertEquals("8, 4, 2, 1, 3, 6, 5, 7, 12, 10, 9, 11, 14, 13, 15", RECURSIVE_TRAVERSAL.flush());
+	public void iterativePreOrderTraversal() {
+		ITERATIVE_TRAVERSAL.preOrder(ROOT_NODE);
+		assertEquals("8, 4, 2, 1, 3, 6, 5, 7, 12, 10, 9, 11, 14, 13, 15", ITERATIVE_TRAVERSAL.flush());
 	}
 	
 	@Test
-	public void recursiveInOrderTraversal() {
-		RECURSIVE_TRAVERSAL.inOrder(ROOT_NODE);
-		assertEquals("1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15", RECURSIVE_TRAVERSAL.flush());
+	public void iterativeInOrderTraversal() {
+		ITERATIVE_TRAVERSAL.inOrder(ROOT_NODE);
+		assertEquals("1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15", ITERATIVE_TRAVERSAL.flush());
 	}
 	
 	@Test
-	public void recursivePostOrderTraversal() {
-		RECURSIVE_TRAVERSAL.postOrder(ROOT_NODE);
-		assertEquals("1, 3, 2, 5, 7, 6, 4, 9, 11, 10, 13, 15, 14, 12, 8", RECURSIVE_TRAVERSAL.flush());
+	public void iterativePostOrderTraversal() {
+		ITERATIVE_TRAVERSAL.postOrder(ROOT_NODE);
+		assertEquals("1, 3, 2, 5, 7, 6, 4, 9, 11, 10, 13, 15, 14, 12, 8", ITERATIVE_TRAVERSAL.flush());
 	}
 
 }
