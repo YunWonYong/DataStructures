@@ -27,32 +27,20 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 		Node<E> currentNode = null;
 		Node<E> pushChildNode = null;
 		Map<Integer, Boolean> printCheck = new HashMap<>(); 
-		int key = 0_0;
+		Integer key = 0_0;
 		Boolean printFlag = null;
 		while((currentNode = callStack.top()) != null) {
-			key = currentNode.hashCode();
 			pushChildNode = currentNode.getLeftChild();
-			printFlag = printCheck.get(isNull(pushChildNode)? null: pushChildNode.hashCode());
-			if (isLeftChildNull(currentNode) || (printFlag != null && printFlag == true)) {
+			key = isNull(pushChildNode) ? null: pushChildNode.hashCode();
+			printFlag = printCheck.get(key);
+			if (isNull(pushChildNode) || (printFlag != null && printFlag == true)) {
 				callStack.pop();
-				printCheck.put(key, true);
+				printCheck.put(currentNode.hashCode(), true);
 				printBufferDataPush(currentNode);
-				notNullNodePush(callStack, currentNode.getRightChild());
-				continue;
-			}  
+				pushChildNode = currentNode.getRightChild();
+			}
 			
-			
-			pushChildNode = currentNode.getLeftChild();
-			if (isNull(pushChildNode) == false && printCheck.get(pushChildNode.hashCode()) == null) {
-				notNullNodePush(callStack, pushChildNode);
-				continue;
-			} 
-			
-			pushChildNode = currentNode.getRightChild();
-			if (isNull(pushChildNode) == false && printCheck.get(pushChildNode.hashCode()) == null) {
-				notNullNodePush(callStack, pushChildNode);
-				continue;
-			} 
+			notNullNodePush(callStack, pushChildNode);
 		}
 	}
 
