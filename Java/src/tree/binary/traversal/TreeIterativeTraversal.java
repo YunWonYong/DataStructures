@@ -24,23 +24,20 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 	@Override
 	public void inOrder(Node<E> node) {
 		final Stack2<Node<E>> callStack = STACK_FACTORY.getInstance(node);
-		Node<E> currentNode = null;
-		Node<E> pushChildNode = null;
-		Map<Integer, Boolean> printCheck = new HashMap<>(); 
-		Integer key = 0_0;
-		Boolean printFlag = null;
-		while((currentNode = callStack.top()) != null) {
-			pushChildNode = currentNode.getLeftChild();
-			key = isNull(pushChildNode) ? null: pushChildNode.hashCode();
-			printFlag = printCheck.get(key);
-			if (isNull(pushChildNode) || (printFlag != null && printFlag == true)) {
-				callStack.pop();
-				printCheck.put(currentNode.hashCode(), true);
-				printBufferDataPush(currentNode);
-				pushChildNode = currentNode.getRightChild();
+		Node<E> currentNode = node;
+		while(true) {
+			if (currentNode != null) {
+				notNullNodePush(callStack, currentNode.getLeftChild());
+				currentNode = currentNode.getLeftChild();
+				continue;
 			}
-			
-			notNullNodePush(callStack, pushChildNode);
+			currentNode = callStack.pop();
+			if (currentNode == null) {
+				return;
+			}
+			printBufferDataPush(currentNode);
+			currentNode = currentNode.getRightChild();
+			notNullNodePush(callStack, currentNode);
 		}
 	}
 
@@ -70,11 +67,10 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 				if (currentNode.equals(parentNode.getLeftChild())) {
 					printTable.put(key, false);
 					notNullNodePush(callStack, parentNode.getRightChild());
-					continue;
 				} else if (currentNode.equals(parentNode.getRightChild())) {
 					printTable.put(key, true);
-					continue;
 				}
+				continue;
 			} else if (isLeafNode(currentNode)) {
 				callStack.pop();
 				if (parentNode != null) {
