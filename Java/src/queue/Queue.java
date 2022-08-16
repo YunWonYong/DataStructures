@@ -51,12 +51,12 @@ public class Queue<T> {
 	public void extend() {
 		T[] temp = array;
 		array = getArray(this.capacity * this.capacity);
-		System.arraycopy(array, 0, temp, 0, temp.length);
-//		int index = 0;
-//		int range = temp.length;
-//		while(index < range) {
-//			array[index] = temp[index++];
-//		}
+//		System.arraycopy(array, 0, temp, 0, temp.length);
+		int index = 0;
+		int range = temp.length;
+		while(index < range) {
+			array[index] = temp[index++];
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
