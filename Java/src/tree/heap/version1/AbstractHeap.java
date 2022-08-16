@@ -1,18 +1,15 @@
-package version1;
+package tree.heap.version1;
 import java.util.Arrays;
 
 public abstract class  AbstractHeap<E> implements Heap<E> {
     private E[] array;
     private int size;
-    private int currentIndex;
-    private final boolean MIN_MAX_FLAG;
     
-    protected AbstractHeap(boolean flag) {
-        this(flag, 10);
+    protected AbstractHeap() {
+        this(10);
     }
 
-    protected AbstractHeap(boolean flag, int capacity) {
-        MIN_MAX_FLAG = flag;
+    protected AbstractHeap(int capacity) {
         grow(capacity);
     }
 
@@ -26,9 +23,68 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
     }
 
     public E remove() {
-        E removeEl = array[currentIndex++];
-        return removeEl;
+        E removeEl = array[0];
+        array[0] = array[--size];
+        array[size] = null;
+        int currentIndex = 0;
+        int leftChildIndex = 0;
+        int rightChildIndex = 0;
+        Integer currentEl = null;
+        Integer leftChildEl = null;
+        Integer rightChildEl = null;
+        while(true) {
+        	currentEl = parseInt(currentIndex);
+        	if (currentEl == null) {
+        		return removeEl;        		
+        	}
+        	leftChildIndex = getLeftChildIndex(currentIndex);
+        	leftChildEl = parseInt(leftChildIndex);
+        	rightChildIndex = getRightChildIndex(currentIndex);
+        	rightChildEl = parseInt(rightChildIndex);
+        	if (leftChildEl == null && rightChildEl == null) {
+        		return removeEl;
+        	}
+        	if (rightChildEl != null && leftChildEl != null) {
+        		if (compare(leftChildEl, rightChildEl) && compare(currentEl, rightChildEl)) {
+        			swap(currentIndex, rightChildIndex);
+        			currentIndex = rightChildIndex;
+        			continue;
+        		} else if (compare(currentEl, leftChildEl)) {
+        			swap(currentIndex, leftChildIndex);
+        			currentIndex = leftChildIndex;
+        			continue;        		
+        		}
+        	} else if (leftChildEl == null && compare(currentEl, rightChildEl)) {
+    			swap(currentIndex, rightChildIndex);
+    			currentIndex = rightChildIndex;
+    			continue;
+    		} else if (rightChildEl == null && compare(currentEl, leftChildEl)) {
+    			swap(currentIndex, leftChildIndex);
+    			currentIndex = leftChildIndex;
+    			continue;        			
+    		}
+        	
+        	currentIndex++;
+        }
     }
+    
+    public boolean isEmpty() {
+    	return array[0] == null;
+    }
+    
+    public String print() {
+    	StringBuffer sb = new StringBuffer();
+    	int index = 0;
+    	while(true) {
+    		sb.append(array[index++]);
+    		if (index == size) {
+    			return sb.toString();
+    		}
+    		sb.append(", ");
+    	}
+    }
+    
+    protected abstract boolean compare(int left, int right);
 
     private void grow(int capacity) {
         if (array == null) {
@@ -38,7 +94,8 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
         array = Arrays.copyOf(array, capacity);
     }
 
-    private void init(int capacity) {
+    @SuppressWarnings("unchecked")
+	private void init(int capacity) {
         array = (E[]) new Object[capacity];
     }
 
@@ -47,14 +104,17 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
         while(index < size) {
             checkIndex = getParentIndex(index);
             if (swapCheck(checkIndex, index)) {
+            	index = checkIndex;
                 continue;
             }
             checkIndex = getLeftChildIndex(index);
-            if (swapCheck(checkIndex, index)) {
+            if (array.length > checkIndex && swapCheck(index, checkIndex)) {
+            	index = checkIndex;
                 continue;
             }
             checkIndex = getRightChildIndex(index);
-            if (swapCheck(checkIndex, index)) {
+            if (array.length > checkIndex && swapCheck(index, checkIndex)) {
+            	index = checkIndex;
                 continue;
             }
 
@@ -75,17 +135,18 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
     }
 
     private boolean swapCheck(int leftIndex, int rightIndex) {
-        E leftEl = array[leftIndex];
-        E rightEl = array[rightIndex];
-        if (isInt(leftEl) && isInt(rightEl)) {
-            int left = (Integer) leftEl;
-            int right = (Integer) rightEl;
-            if ( (MIN_MAX_FLAG && left < right) || (!MIN_MAX_FLAG && left > right)) {
-                swap(leftIndex, rightIndex);
-                return true;
-            } 
+        Integer leftEl = parseInt(leftIndex);
+        Integer rightEl = parseInt(rightIndex);
+        if (leftEl != null && rightEl != null && compare(leftEl, rightEl)) {
+        	swap(leftIndex, rightIndex);
+        	return true;
         }
         return false;
+    }
+    
+    private Integer parseInt(int index) {
+    	E el = array[index];
+    	return isInt(el) ? (Integer) el: null;
     }
 
     private boolean isInt(E el) {
