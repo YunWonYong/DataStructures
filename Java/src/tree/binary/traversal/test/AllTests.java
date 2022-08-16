@@ -8,6 +8,10 @@ import tree.binary.traversal.test.iterative.IterativeTraversalTest;
 import tree.binary.traversal.test.iterative.IterativeTraversalTest2;
 import tree.binary.traversal.test.iterative.IterativeTraversalTest3;
 import tree.binary.traversal.test.iterative.IterativeTraversalTest4;
+import tree.binary.traversal.test.level.LevelOrderTest;
+import tree.binary.traversal.test.level.LevelOrderTest2;
+import tree.binary.traversal.test.level.LevelOrderTest3;
+import tree.binary.traversal.test.level.LevelOrderTest4;
 import tree.binary.traversal.test.recursive.RecursiveTraversalTest;
 import tree.binary.traversal.test.recursive.RecursiveTraversalTest2;
 import tree.binary.traversal.test.recursive.RecursiveTraversalTest3;
@@ -22,7 +26,11 @@ import tree.binary.traversal.test.recursive.RecursiveTraversalTest4;
 	RecursiveTraversalTest.class,
 	RecursiveTraversalTest2.class,
 	RecursiveTraversalTest3.class,
-	RecursiveTraversalTest4.class
+	RecursiveTraversalTest4.class,
+	LevelOrderTest.class,
+	LevelOrderTest2.class,
+	LevelOrderTest3.class,
+	LevelOrderTest4.class,
 })
 public class AllTests {
 

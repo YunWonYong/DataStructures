@@ -48,7 +48,7 @@ public class TreeIterativeTraversal<E> extends AbstractTreeTraversal<E> {
 		Boolean childrenPrintCheck = null;
 		int key = 0_0;
 		while(true) {
-			if (currentNode != null) {
+			if (isNotNull(currentNode)) {
 				STACK_FACTORY.notNullNodePush(currentNode);
 				visitor.put(currentNode.hashCode(), false);
 				currentNode = currentNode.getLeftChild();

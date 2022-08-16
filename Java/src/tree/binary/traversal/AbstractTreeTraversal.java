@@ -24,12 +24,12 @@ public abstract class AbstractTreeTraversal<E> implements TreeTraversal<E> {
 	}
 	
 	@Override
-	public abstract void preOrder(Node<E> node);
+	public void preOrder(Node<E> node) {}
 
 	@Override
-	public abstract void inOrder(Node<E> node);
+	public void inOrder(Node<E> node) {}
 
 	@Override
-	public abstract void postOrder(Node<E> node);
+	public void postOrder(Node<E> node) {}
 
 }
