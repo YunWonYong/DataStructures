@@ -38,9 +38,18 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
         		return removeEl;        		
         	}
         	leftChildIndex = getLeftChildIndex(currentIndex);
-        	leftChildEl = parseInt(leftChildIndex);
+        	if (leftChildIndex >= array.length) {        		
+        		leftChildEl = null;
+        	} else {
+        		leftChildEl = parseInt(leftChildIndex);        		
+        	}
         	rightChildIndex = getRightChildIndex(currentIndex);
-        	rightChildEl = parseInt(rightChildIndex);
+        	if (rightChildIndex >= array.length) {        		
+        		rightChildEl = null;
+        	} else {
+        		rightChildEl = parseInt(rightChildIndex); 
+        	}
+        	
         	if (leftChildEl == null && rightChildEl == null) {
         		return removeEl;
         	}
@@ -123,7 +132,8 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
     }
 
     private int getParentIndex(int index) {
-        return index <= 0 ? 0: index / 2;
+    	index = index % 2 != 0 ? index / 2: index / 2 - 1;
+        return index < 0? 0 : index;
     }
 
     private int getLeftChildIndex(int index) {
