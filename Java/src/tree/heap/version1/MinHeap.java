@@ -5,8 +5,13 @@ public class MinHeap<E> extends AbstractHeap<E> {
     }
 
 	@Override
-	protected boolean compare(int left, int right) {
-		return left > right;
+	protected boolean compare(E left, E right) {
+		Integer leftEl = parseInt(left);
+		Integer rightEl = parseInt(right);
+		if (leftEl == null || rightEl == null) {
+			return false;
+		}
+		return leftEl > rightEl;
 	}
     
 }

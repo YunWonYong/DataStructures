@@ -4,7 +4,7 @@ import java.util.Arrays;
 import tree.heap.Heap;
 
 public abstract class  AbstractHeap<E> implements Heap<E> {
-    private E[] array;
+    protected E[] array;
     private int size;
     
     protected AbstractHeap() {
@@ -31,51 +31,28 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
         int currentIndex = 0;
         int leftChildIndex = 0;
         int rightChildIndex = 0;
-        Integer currentEl = null;
-        Integer leftChildEl = null;
-        Integer rightChildEl = null;
+        E currentEl = null;
         while(true) {
-        	currentEl = parseInt(currentIndex);
+        	currentEl = getEl(currentIndex);
         	if (currentEl == null) {
         		return removeEl;        		
         	}
         	leftChildIndex = getLeftChildIndex(currentIndex);
-        	if (leftChildIndex >= array.length) {        		
-        		leftChildEl = null;
-        	} else {
-        		leftChildEl = parseInt(leftChildIndex);        		
-        	}
         	rightChildIndex = getRightChildIndex(currentIndex);
-        	if (rightChildIndex >= array.length) {        		
-        		rightChildEl = null;
+        	E left = getEl(leftChildIndex);
+        	E right = getEl(rightChildIndex);
+        	int swapIndex = -1;
+        	if (left != null && right != null) {
+    			swapIndex = compare(left, right)? rightChildIndex: leftChildIndex;
+        	} else if (left != null) {
+        		swapIndex = leftChildIndex;
+        	} else if (right != null) {
+        		swapIndex = rightChildIndex;
         	} else {
-        		rightChildEl = parseInt(rightChildIndex); 
-        	}
-        	
-        	if (leftChildEl == null && rightChildEl == null) {
         		return removeEl;
         	}
-        	if (rightChildEl != null && leftChildEl != null) {
-        		if (compare(leftChildEl, rightChildEl) && compare(currentEl, rightChildEl)) {
-        			swap(currentIndex, rightChildIndex);
-        			currentIndex = rightChildIndex;
-        			continue;
-        		} else if (compare(currentEl, leftChildEl)) {
-        			swap(currentIndex, leftChildIndex);
-        			currentIndex = leftChildIndex;
-        			continue;        		
-        		}
-        	} else if (leftChildEl == null && compare(currentEl, rightChildEl)) {
-    			swap(currentIndex, rightChildIndex);
-    			currentIndex = rightChildIndex;
-    			continue;
-    		} else if (rightChildEl == null && compare(currentEl, leftChildEl)) {
-    			swap(currentIndex, leftChildIndex);
-    			currentIndex = leftChildIndex;
-    			continue;        			
-    		}
         	
-        	currentIndex++;
+        	currentIndex = swapCheck(currentIndex, swapIndex)? swapIndex: currentIndex + 1;
         }
     }
     
@@ -84,18 +61,22 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
     }
     
     public String print() {
-    	StringBuffer sb = new StringBuffer();
+    	StringBuffer sb = new StringBuffer().append("[");
     	int index = 0;
     	while(true) {
     		sb.append(array[index++]);
     		if (index == size) {
-    			return sb.toString();
+    			return sb.append("]").toString();
     		}
     		sb.append(", ");
     	}
     }
     
-    protected abstract boolean compare(int left, int right);
+    protected Integer parseInt(E el) {
+    	return isInt(el) ? (Integer) el: null;
+    }
+    
+    protected abstract boolean compare(E left, E right);
 
     private void grow(int capacity) {
         if (array == null) {
@@ -109,22 +90,30 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
 	private void init(int capacity) {
         array = (E[]) new Object[capacity];
     }
-
+    
     private void heapify(int index) {
         int checkIndex = 0;
         while(index < size) {
             checkIndex = getParentIndex(index);
+            if (!indexCheck(checkIndex)) {
+            	return;
+            }
+            
             if (swapCheck(checkIndex, index)) {
             	index = checkIndex;
                 continue;
             }
+            
             checkIndex = getLeftChildIndex(index);
-            if (array.length > checkIndex && swapCheck(index, checkIndex)) {
+            
+            if (indexCheck(checkIndex) && swapCheck(index, checkIndex)) {
             	index = checkIndex;
                 continue;
             }
+            
             checkIndex = getRightChildIndex(index);
-            if (array.length > checkIndex && swapCheck(index, checkIndex)) {
+            
+            if (indexCheck(checkIndex) && swapCheck(index, checkIndex)) {
             	index = checkIndex;
                 continue;
             }
@@ -132,33 +121,37 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
             index++;
         }   
     }
-
+    
     private int getParentIndex(int index) {
     	index = index % 2 != 0 ? index / 2: index / 2 - 1;
         return index < 0? 0 : index;
     }
-
-    private int getLeftChildIndex(int index) {
-        return index * 2 + 1;
-    }
-
+    
     private int getRightChildIndex(int index) {
         return index * 2 + 2;
     }
-
-    private boolean swapCheck(int leftIndex, int rightIndex) {
-        Integer leftEl = parseInt(leftIndex);
-        Integer rightEl = parseInt(rightIndex);
-        if (leftEl != null && rightEl != null && compare(leftEl, rightEl)) {
-        	swap(leftIndex, rightIndex);
-        	return true;
-        }
-        return false;
+    
+    private int getLeftChildIndex(int index) {
+        return index * 2 + 1;
     }
     
-    private Integer parseInt(int index) {
-    	E el = array[index];
-    	return isInt(el) ? (Integer) el: null;
+    private E getEl(int index) {
+    	return indexCheck(index)? array[index]: null;
+    }
+    
+    private boolean indexCheck(int index) {
+    	return this.size > index && index > -1;
+    }
+
+    private boolean swapCheck(int leftIndex, int rightIndex) {
+        E leftEl = getEl(leftIndex);
+        E rightEl = getEl(rightIndex);
+        if (leftEl == null || rightEl == null || !compare(leftEl, rightEl)) {
+        	return false;
+        }
+        
+        swap(leftIndex, rightIndex);
+        return true;
     }
 
     private boolean isInt(E el) {
