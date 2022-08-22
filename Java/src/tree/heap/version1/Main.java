@@ -8,6 +8,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
 
+import tree.heap.Heap;
+
 public class Main {
 
     public static void main(String[] args) {

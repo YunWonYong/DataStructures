@@ -1,6 +1,8 @@
 package tree.heap.version1;
 import java.util.Arrays;
 
+import tree.heap.Heap;
+
 public abstract class  AbstractHeap<E> implements Heap<E> {
     private E[] array;
     private int size;
