@@ -38,19 +38,18 @@ public abstract class  AbstractHeap<E> implements Heap<E> {
         		return removeEl;        		
         	}
         	leftChildIndex = getLeftChildIndex(currentIndex);
-        	rightChildIndex = getRightChildIndex(currentIndex);
         	E left = getEl(leftChildIndex);
-        	E right = getEl(rightChildIndex);
-        	int swapIndex = -1;
-        	if (left != null && right != null) {
-    			swapIndex = compare(left, right)? rightChildIndex: leftChildIndex;
-        	} else if (left != null) {
-        		swapIndex = leftChildIndex;
-        	} else if (right != null) {
-        		swapIndex = rightChildIndex;
-        	} else {
+        	if (left == null){
         		return removeEl;
         	}
+        	
+        	rightChildIndex = getRightChildIndex(currentIndex);
+        	E right = getEl(rightChildIndex);
+        	int swapIndex = leftChildIndex;
+        	
+        	if (left != null && right != null) {
+    			swapIndex = compare(left, right)? rightChildIndex: leftChildIndex;
+        	} 
         	
         	currentIndex = swapCheck(currentIndex, swapIndex)? swapIndex: currentIndex + 1;
         }
